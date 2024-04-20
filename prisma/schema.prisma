@@ -31,4 +31,3 @@ model User {
   ADMIN
   GUEST
  }
-
