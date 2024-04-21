@@ -43,7 +43,6 @@ describe("given a instanc of class SerieRepo", () => {
     test("Then it should call the method create", async () => {
       (mockPrisma.user.create as jest.Mock).mockResolvedValue('[{"id":"1"}]');
       const result = await repo.create({
-        birthDateString: "",
         email: "",
         name: "",
         password: "",
