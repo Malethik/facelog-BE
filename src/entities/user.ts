@@ -12,7 +12,6 @@ export type User = {
 export type UserCreateDto = {
   name: string;
   email: string;
-  birthDateString: string;
   password: string;
 };
 
