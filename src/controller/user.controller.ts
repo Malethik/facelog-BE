@@ -18,7 +18,7 @@ export class UserController extends BaseController<User, UserCreateDto> {
   }
 
   async logIn(req: Request, res: Response, next: NextFunction) {
-    const { email, name, password } = req.body as UserCreateDto;
+    const { email, password } = req.body as UserCreateDto;
     if ((!email && !password) || !password) {
       next(new HttpError(400, "Bad Request", "Email or Password are required"));
       return;
@@ -33,7 +33,7 @@ export class UserController extends BaseController<User, UserCreateDto> {
 
       const user = await this.repo.searchForLogin(
         email ? "email" : "name",
-        email || name
+        email || password
       );
       if (!user) {
         next(error);
