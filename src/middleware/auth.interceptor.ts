@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import createDebug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { HttpError } from "./http.error.js";
@@ -28,8 +27,8 @@ export class AuthInterceptor {
 
       req.body.payload = payload;
       next();
-    } catch (error) {
-      // Error.message
+    } catch (err) {
+      error.message = (err as Error).message;
       next(error);
     }
   }
@@ -54,5 +53,17 @@ export class AuthInterceptor {
   authorization(req: Request, res: Response, next: NextFunction) {
     const { payload } = req.body as { payload: Payload };
     const { id } = req.params;
+    if (payload.id !== id) {
+      next(
+        new HttpError(
+          403,
+          "Forbidden",
+          "You are not allowed to access this resource"
+        )
+      );
+      return;
+    }
+
+    next();
   }
 }

@@ -67,7 +67,7 @@ export class UserRepo implements WithLoginRepo<User, UserCreateDto> {
   }
 
   async create(data: UserCreateDto) {
-    const { birthDateString, ...rest } = data;
+    const { ...rest } = data;
     const newUser = this.prisma.user.create({
       data: {
         role: "USER",
