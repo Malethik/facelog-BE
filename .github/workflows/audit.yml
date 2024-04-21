@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v4
-
+      
       - name: Check if .editorconfig exists
         uses: andstor/file-existence-action@v2
         with:
@@ -27,7 +27,8 @@ jobs:
 
       - name: Install modules
         run: npm ci
-
+      - name: Eslint fix
+        run: npm eclint fix
       - name: ESLint validation
         run: npx eslint --ignore-path .gitignore
 
