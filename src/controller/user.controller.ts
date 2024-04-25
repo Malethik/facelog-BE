@@ -19,10 +19,12 @@ export class UserController extends BaseController<User, UserCreateDto> {
 
   async logIn(req: Request, res: Response, next: NextFunction) {
     const { email, name, password } = req.body as UserCreateDto;
-    if ((!email && !password) || !password) {
+    if (!email || !password) {
       next(new HttpError(400, "Bad Request", "Email or Password are required"));
       return;
     }
+
+    console.log("email", email);
 
     try {
       const error = new HttpError(
@@ -49,6 +51,7 @@ export class UserController extends BaseController<User, UserCreateDto> {
         id: user.id!,
         role: user.role!,
       });
+      console.log("token", token);
       res.status(200).json({ token });
     } catch (error) {
       next(error);
@@ -62,6 +65,8 @@ export class UserController extends BaseController<User, UserCreateDto> {
     }
 
     req.body.password = await Auth.hash(req.body.password as string);
+
+    req.body.avatar = req.file ? req.file.filename : "sample.png";
     await super.create(req, res, next);
   }
 

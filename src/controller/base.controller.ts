@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { NextFunction, type Request, type Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import createDebug from "debug";
 import Joi from "joi";
 import { Repo } from "../entities/type.repo";
