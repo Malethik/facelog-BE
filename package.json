@@ -17,6 +17,9 @@
   "keywords": [],
   "author": "Daniele Quintiliani",
   "license": "ISC",
+  "bin": {
+    "execute": "index.js"
+  },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
