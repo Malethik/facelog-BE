@@ -17,6 +17,7 @@ model User {
   id         String       @id @default(uuid())
   name       String
   password   String
+  avatar     String     @default("sample.png")
   email      String    @unique
   role       Role      @default(USER)
   friends    User[]    @relation("Friendship")

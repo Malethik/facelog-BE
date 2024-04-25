@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { HttpError } from "./http.error.js";
 import { Auth } from "../service/auth.service.js";
 import { Payload } from "../entities/token.js";
+import { Repo } from "../entities/type.repo.js";
 
 const debug = createDebug("W7E:Auth:interceptor");
 
@@ -50,20 +51,42 @@ export class AuthInterceptor {
     next();
   }
 
-  authorization(req: Request, res: Response, next: NextFunction) {
-    const { payload } = req.body as { payload: Payload };
-    const { id } = req.params;
-    if (payload.id !== id) {
-      next(
-        new HttpError(
-          403,
-          "Forbidden",
-          "You are not allowed to access this resource"
-        )
-      );
-      return;
-    }
+  authorization<T>(repo: Repo<T, any>, ownerKey?: keyof T) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      debug("Authorizing");
 
-    next();
+      const { payload, ...rest } = req.body as { payload: Payload };
+      req.body = rest;
+
+      const { role } = payload;
+      if (role === "admin") {
+        next();
+        return;
+      }
+
+      try {
+        const item = (await repo.readById(req.params.id)) as Awaited<T> & {
+          id: string;
+        };
+        const ownerId = ownerKey
+          ? (item[ownerKey] as { id: string }).id
+          : item.id;
+        if (payload.id !== ownerId) {
+          next(
+            new HttpError(
+              403,
+              "Forbidden",
+              "You are not allowed to access this resource"
+            )
+          );
+          return;
+        }
+
+        debug("Authorized", req.body);
+        next();
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }

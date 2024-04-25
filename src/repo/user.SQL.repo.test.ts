@@ -46,6 +46,7 @@ describe("given a instanc of class SerieRepo", () => {
         email: "",
         name: "",
         password: "",
+        avatar: "",
       });
       expect(mockPrisma.user.create).toHaveBeenCalled();
       expect(result).toEqual('[{"id":"1"}]');

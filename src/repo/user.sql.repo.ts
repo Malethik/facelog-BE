@@ -5,6 +5,7 @@ import createDebug from "debug";
 import { User, UserCreateDto } from "../entities/user.js";
 import { WithLoginRepo } from "../entities/type.repo.js";
 import { HttpError } from "../middleware/http.error.js";
+import { NextFunction, Request, Response } from "express";
 
 const debug = createDebug("W7E:repository:user:SQL");
 const select = {
@@ -12,6 +13,7 @@ const select = {
   name: true,
   email: true,
   password: true,
+  avatar: true,
   role: true,
   enemies: true,
   friends: true,
@@ -107,4 +109,26 @@ export class UserRepo implements WithLoginRepo<User, UserCreateDto> {
       select,
     });
   }
+
+  /*  Async manageRelation(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const { idRelation, relationType } = req.body as any;
+
+    if (!id || !idRelation || !relationType) {
+      next(
+        new HttpError(
+          400,
+          "Bad Request",
+          "id, idRelation and relationType are required"
+        )
+      );
+      return;
+    }
+
+    if (relationType === "none") {
+
+    } else if (relationType !== "friend" && relationType !== "enemy") {
+      next(new HttpError(400, "Bad Request", "Invalid relation type"));
+    }
+  } */
 }
