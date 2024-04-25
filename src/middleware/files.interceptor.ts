@@ -22,13 +22,13 @@ export class FileInterceptor {
     const upload = multer({ storage });
     const middleware = upload.single(fieldName);
 
-    return middleware;
+    /*  Return middleware; */
 
-    /*  Return (req: Request, res: Response, next: NextFunction) => {
+    return (req: Request, res: Response, next: NextFunction) => {
       const previusBoy = req.body as Record<string, unknown>;
       middleware(req, res, next);
       req.body = { previusBoy, ...req.body } as unknown;
-    }; */
+    };
   }
 
   async cloudinaryUpload(req: Request, res: Response, next: NextFunction) {
