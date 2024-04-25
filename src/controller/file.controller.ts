@@ -9,9 +9,12 @@ export class FileController {
       return;
     }
 
-    return res.json({
-      message: `File ${req.file.filename} uploaded successfully`,
-      file: req.file.filename,
+    res.json({
+      message: `File uploaded successfully`,
+      fieldname: req.file.fieldname,
+      width: req.body.cloudinary.width,
+      heigth: req.body.cloudinary.height,
+      file: req.body.cloudinary.public_id,
     });
   }
 }

@@ -25,6 +25,7 @@ export class UserRouter {
     this.router.post(
       "/registrer",
       fileInterceptor.singleFile("avatar"),
+      fileInterceptor.cloudinaryUpload,
       controller.create.bind(controller)
     );
     this.router.post("/login", controller.logIn.bind(controller));
